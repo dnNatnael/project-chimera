@@ -3,16 +3,17 @@ FROM python:3.12-slim
 # Set work directory
 WORKDIR /app
 
-# Install system dependencies (optional)
-# RUN apt-get update && apt-get install -y --no-install-recommends \
-#     build-essential \
-#  && rm -rf /var/lib/apt/lists/*
+# Install system dependencies for testing
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+ && rm -rf /var/lib/apt/lists/*
 
 # Copy project files
 COPY . /app
 
-# Install Python dependencies (if you have requirements.txt)
-# RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies including test dependencies
+RUN pip install --no-cache-dir -e .[test] || \
+    pip install --no-cache-dir pytest
 
-# Default command (adjust as needed)
-CMD ["python", "-m", "your_main_module"]
+# Default command runs tests
+CMD ["python", "-m", "pytest", "tests/", "-v"]
