@@ -2,3 +2,4 @@
 /.specify/
 /venv/
 __pycache__
+/commands/
