@@ -1,0 +1,73 @@
+# AI review configuration for Project Chimera
+# This file defines strict governance rules for AI-assisted code reviews.
+
+version: 1
+
+ai_reviewer:
+  # Treat specifications as immutable law for this repository.
+  specs_root: specs/
+
+  # Operate in strict mode: prefer rejection over silent acceptance.
+  strict_mode: true
+
+  # General review expectations for every change.
+  expectations:
+    - "Verify every change aligns with the documents under specs/; treat any conflict as a policy violation."
+    - "Assume future commits may be authored by autonomous agents; do not rely on implied intent or undocumented context."
+    - "When in doubt about safety, security, or spec alignment, request changes rather than approving."
+
+  # Hard requirements that must be checked on every review.
+  mandatory_checks:
+    # Spec alignment and justification
+    - id: spec-alignment
+      description: "Ensure implementations follow the specifications under specs/."
+      rules:
+        - "For any behavior, API, or data contract modified in this change, cross-check against specs/ and highlight exact sections used for justification."
+        - "If the implementation deviates from specs/, require a clear written justification in the PR description and comments, referencing the specific spec lines."
+        - "Reject changes that introduce new behavior or interfaces not traceable back to specs/ unless the PR explicitly updates the relevant spec first."
+        - "Reject changes that weaken, bypass, or ignore spec-defined constraints, invariants, or governance mechanisms."
+
+    # Skill interface enforcement
+    - id: skill-interface-enforcement
+      description: "Prevent implementations from bypassing defined Skill interfaces."
+      rules:
+        - "Identify all Skill interfaces and their intended usage patterns as defined in specs/ and dedicated Skill configuration files."
+        - "Flag and request changes for any new code that accesses underlying capabilities (e.g., tools, external services, low-level APIs) without going through the approved Skill interfaces."
+        - "Reject changes that duplicate existing Skill behavior in ad-hoc functions, scripts, or classes instead of reusing or extending the established Skill interfaces."
+        - "Flag any direct calls to unmanaged or undocumented tools, services, or capabilities that are not mapped through an existing Skill interface."
+
+    # Security and safety checks
+    - id: security-safety
+      description: "Detect and prevent security risks introduced by code changes."
+      rules:
+        - "Search for hard-coded secrets (API keys, tokens, passwords, private keys) in all added or modified files and require their removal or secure handling."
+        - "Flag any use of subprocess, shell execution, or command invocation that constructs commands dynamically; require strict input validation and avoidance of shell injection risks."
+        - "Flag any new network-accessing code (HTTP clients, sockets, RPC, SDKs) and ensure it is explicitly allowed by specs/ and follows least-privilege principles."
+        - "Require that any change touching authentication, authorization, or data access control includes explicit tests and clear reasoning about security impacts."
+        - "Reject changes that expand data exposure (logging sensitive data, broad query filters, permissive CORS, or debug endpoints) without explicit spec-backed justification."
+
+    # Justification and documentation
+    - id: justification-and-traceability
+      description: "Require clear human-readable justification for impactful changes."
+      rules:
+        - "For non-trivial changes (behavioral, architectural, or security-related), require the PR author to explain the intent, design rationale, and spec references."
+        - "Reject changes where behavior cannot be clearly mapped back to specs/ or where reasoning is missing, ambiguous, or inconsistent."
+        - "Encourage small, focused PRs that are easy to reason about; flag large, mixed-purpose PRs and recommend splitting them for better governance."
+
+  # Default decision policy for the AI reviewer.
+  decision_policy:
+    # Prefer requesting changes instead of approval when important checks are uncertain.
+    prefer_reject_on_uncertainty: true
+
+    # Explicit reject conditions.
+    reject_if:
+      - "Spec divergence is detected without an accompanying spec update and justification."
+      - "Security concerns are raised (secrets, unsafe subprocess, unauthorized network access) and not fully addressed."
+      - "New code bypasses or duplicates Skill interfaces instead of using the approved pathways."
+      - "Changes weaken or remove existing safety, validation, or governance checks without strong, spec-backed justification."
+
+    # When approval is allowed, keep a record of key justifications and links to specs.
+    approval_requirements:
+      - "Summarize which specs/ sections were used to validate the change."
+      - "Confirm that no secrets or unsafe execution paths are introduced."
+      - "Confirm that all new capabilities route through approved Skill interfaces."
