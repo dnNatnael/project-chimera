@@ -1,0 +1,15 @@
+{
+  "name": "project-chimera",
+  "version": "1.0.0",
+  "description": "Project Chimera is an **Autonomous AI Influencer platform** built on agent swarms, spec-driven development, and human-in-the-loop governance.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
