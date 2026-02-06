@@ -1,2 +1,4 @@
 /.cursor/
 /.specify/
+/venv/
+__pycache__
