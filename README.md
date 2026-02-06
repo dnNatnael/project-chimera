@@ -111,7 +111,9 @@ The `specs/` directory is the **single source of truth**:
 specs/
 ├── _meta.md # Vision & constraints
 ├── functional.md # User stories & agent behaviors
-├── technical.md # APIs, schemas, system contracts
+├── technical.md # Enhanced with complete DB architecture, security, and MCP config
+├── acceptance_criteria.md # New comprehensive Gherkin scenarios and thresholds
+├── mcp_configuration.md  # New multi-server MCP configuration
 └── openclaw_integration.md # Agent network integration
 
 
@@ -177,16 +179,39 @@ project-chimera/
 ├── specs/                    # Specifications (single source of truth)
 │   ├── _meta.md
 │   ├── functional.md
-│   ├── openclaw_integration.md
-│   └── technical.md
+│   ├── technical.md
+│   ├── acceptance_criteria.md
+│   ├── mcp_configuration.md
+│   └── openclaw_integration.md
 ├── skills/                   # Agent skill implementations
 │   ├── README.md
 │   ├── skill_trend_fetcher/
 │   │   ├── __init__.py
-│   │   └── README.md
+│   │   └── contract.md
+│   ├── skill_content_generator/
+│   │   └── contract.md
 │   └── skill_video_publisher/
 │       ├── __init__.py
 │       └── README.md
+├── frontend/                  # React-based dashboard
+│   ├── package.json
+│   ├── src/
+│   │   ├── App.tsx
+│   │   ├── components/
+│   │   │   ├── Layout.tsx
+│   │   │   ├── MetricCard.tsx
+│   │   │   ├── ActivityChart.tsx
+│   │   │   ├── RecentTasks.tsx
+│   │   │   └── SystemHealth.tsx
+│   │   └── pages/
+│   │       ├── Dashboard.tsx
+│   │       ├── Agents.tsx
+│   │       ├── Tasks.tsx
+│   │       ├── Content.tsx
+│   │       ├── Trends.tsx
+│   │       └── Security.tsx
+│   └── tsconfig.json
+├── AGENT_RULES.md           # Chimera-specific behavioral rules and governance
 ├── tests/                    # Test suite
 │   ├── test_skills_interface.py
 │   └── test_trend_fetcher.py
@@ -217,22 +242,28 @@ make help           # Show all available commands
 
 ### ✅ Completed
 - **Task 1**: Architecture strategy and research
-- **Task 2**: Complete specification suite
-- **Task 3**: Core implementation framework
-- Testing infrastructure with Docker support
-- Skill interface implementations
-- Build automation
+- **Task 2**: Complete specification suite with enhanced technical details
+- **Task 3**: Core implementation framework with frontend dashboard
+- **Database architecture**: Complete ERD, schemas, and migration plans
+- **Security framework**: Comprehensive AuthN/AuthZ, secrets management, and moderation
+- **Agent skills**: Formal contracts and enhanced skill structure
+- **Testing infrastructure**: Docker support with comprehensive test coverage
+- **Build automation**: Complete CI/CD pipeline with GitHub Actions
+- **MCP integration**: Multi-server configuration with authentication strategies
+- **Acceptance criteria**: Gherkin scenarios with quantitative thresholds
 
 ### 🚧 In Progress
-- Advanced skill implementations
-- Integration testing
-- Performance optimization
+- Advanced skill implementations with full contracts
+- Integration testing across all components
+- Performance optimization and monitoring
+- Production deployment configuration
 
 ### 🎯 Next Steps
-- Complete skill implementations
-- Add integration tests
-- Deploy to production environment
-- Add monitoring and logging
+- Complete remaining skill implementations (Analyst, Moderator, Transaction Manager)
+- Add comprehensive integration test suite
+- Deploy to production environment with monitoring
+- Implement continuous performance optimization
+- Add advanced analytics and reporting capabilities
 
 ---
 
